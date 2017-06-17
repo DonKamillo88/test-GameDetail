@@ -1,0 +1,51 @@
+package com.donkamillo.gamedetails.data;
+
+import android.content.Context;
+
+import com.donkamillo.gamedetails.data.local.SharedPreferencesManager;
+
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Created by DonKamillo on 16.06.2017.
+ */
+
+public class DataRepository {
+    private DataSource remoteDataSource;
+    private DataSource localDataSource;
+
+    private static DataRepository dataRepository;
+
+    public DataRepository(DataSource remoteDataSource, DataSource localDataSource) {
+        this.remoteDataSource = remoteDataSource;
+        this.localDataSource = localDataSource;
+    }
+
+    public static synchronized DataRepository getInstance(DataSource remoteDataSource, DataSource localDataSource) {
+        if (dataRepository == null) {
+            dataRepository = new DataRepository(remoteDataSource, localDataSource);
+        }
+        return dataRepository;
+    }
+
+    public void getGames(Context context, final DataSource.GetGamesCallback callback) {
+        long today = new Date().getTime();
+        long downloadDataDate = SharedPreferencesManager.loadCacheDate(context);
+        if (downloadDataDate == 0 || today - downloadDataDate > TimeUnit.HOURS.toMillis(1)) {
+            remoteDataSource.getGames(context, callback);
+        } else {
+            localDataSource.getGames(context, callback);
+        }
+
+
+    }
+
+    public void getPlayerInfo(Context context, final DataSource.GetPlayerInfoCallback callback) {
+        remoteDataSource.getPlayerInfo(context, callback);
+    }
+
+    public void destroyInstance() {
+        dataRepository = null;
+    }
+}

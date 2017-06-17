@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GameDetails</string>
+    <string name="error_msg">Something went wrong, please try again later.</string>
+    <string name="last_login_date">Last login date:</string>
+    <string name="balance">Balance:</string>
+    <string name="jackpot">Jackpot:</string>
+    <string name="game_date">Game date:</string>
+    <string name="avatar">avatar</string>
+</resources>
