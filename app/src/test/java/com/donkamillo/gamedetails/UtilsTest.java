@@ -46,4 +46,21 @@ public class UtilsTest {
         assertThat(Utils.getFormattedDateByLocale("04/05/2016T16:45", Utils.LAST_LOGIN_DATE_FORMAT, Locale.UK), is("04-May-2016 16:45:00"));
     }
 
+    @Test
+    public void getFormattedCurrencyByLocal_positive_input() {
+        assertThat(Utils.getFormattedCurrencyByLocal(1000000, Locale.UK), is("£1,000,000.00"));
+        assertThat(Utils.getFormattedCurrencyByLocal(1000000, Locale.US), is("$1,000,000.00"));
+        assertThat(Utils.getFormattedCurrencyByLocal(1000000, Locale.FRANCE), is("1 000 000,00 €"));
+    }
+
+    @Test
+    public void getFormattedCurrencyByLocal_negative_input() {
+        assertThat(Utils.getFormattedCurrencyByLocal(-50000, Locale.UK), is("-£50,000.00"));
+    }
+
+    @Test
+    public void getFormattedCurrencyByLocal_zero_input() {
+        assertThat(Utils.getFormattedCurrencyByLocal(0, Locale.UK), is("£0.00"));
+    }
+
 }

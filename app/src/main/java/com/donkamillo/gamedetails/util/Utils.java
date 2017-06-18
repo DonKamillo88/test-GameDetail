@@ -1,7 +1,5 @@
 package com.donkamillo.gamedetails.util;
 
-import android.util.Log;
-
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -19,12 +17,15 @@ public class Utils {
     public static final String LAST_LOGIN_DATE_FORMAT = "dd/MM/yyyy'T'HH:mm"; // 04/05/2016T16:45
 
     public static String getFormattedCurrency(String currencyCode, long balance) {
-        NumberFormat format = NumberFormat.getCurrencyInstance(getLocale(currencyCode));
-        return format.format(balance);
+        return getFormattedCurrencyByLocal(balance, getLocale(currencyCode));
     }
 
     public static String getFormattedCurrency(long balance) {
-        NumberFormat format = NumberFormat.getCurrencyInstance();
+        return getFormattedCurrencyByLocal(balance, Locale.getDefault());
+    }
+
+    public static String getFormattedCurrencyByLocal(long balance, Locale locale) {
+        NumberFormat format = NumberFormat.getCurrencyInstance(locale);
         return format.format(balance);
     }
 
