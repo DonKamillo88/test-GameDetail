@@ -30,15 +30,17 @@ public class DataRepository {
     }
 
     public void getGames(Context context, final DataSource.GetGamesCallback callback) {
+        getDataSource(context).getGames(context, callback);
+    }
+
+    public DataSource getDataSource(Context context) {
         long today = new Date().getTime();
         long downloadDataDate = SharedPreferencesManager.loadCacheDate(context);
         if (downloadDataDate == 0 || today - downloadDataDate > TimeUnit.HOURS.toMillis(1)) {
-            remoteDataSource.getGames(context, callback);
+            return remoteDataSource;
         } else {
-            localDataSource.getGames(context, callback);
+            return localDataSource;
         }
-
-
     }
 
     public void getPlayerInfo(Context context, final DataSource.GetPlayerInfoCallback callback) {

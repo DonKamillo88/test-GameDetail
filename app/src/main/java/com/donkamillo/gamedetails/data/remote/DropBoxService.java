@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class DropBoxService {
-    private static final String API_URL = "https://www.dl.dropboxusercontent.com";
+    public static String API_URL = "https://www.dl.dropboxusercontent.com";
 
     public static DropBox getService() {
         return new Retrofit.Builder()

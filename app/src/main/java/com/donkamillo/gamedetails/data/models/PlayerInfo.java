@@ -26,4 +26,20 @@ public class PlayerInfo {
     public String getLastLoginDate() {
         return lastLogindate;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setBalance(long balance) {
+        this.balance = balance;
+    }
+
+    public void setAvatarLink(String avatarLink) {
+        this.avatarLink = avatarLink;
+    }
+
+    public void setLastLogindate(String lastLogindate) {
+        this.lastLogindate = lastLogindate;
+    }
 }
