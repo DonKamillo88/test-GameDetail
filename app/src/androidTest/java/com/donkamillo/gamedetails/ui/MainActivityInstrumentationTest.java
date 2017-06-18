@@ -16,6 +16,7 @@ import com.donkamillo.gamedetails.R;
 import com.donkamillo.gamedetails.RestServiceTestHelper;
 import com.donkamillo.gamedetails.data.local.SharedPreferencesManager;
 import com.donkamillo.gamedetails.data.remote.DropBoxService;
+import com.donkamillo.gamedetails.util.Utils;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 
@@ -76,8 +77,13 @@ public class MainActivityInstrumentationTest extends InstrumentationTestCase {
         ViewInteraction appCompatTextView = onView(allOf(withId(R.id.name), withText("Game abc"), childAtPosition(allOf(withId(R.id.main_layout), childAtPosition(withId(R.id.list_view), 0)), 0), isDisplayed()));
         appCompatTextView.perform(click());
 
-        onView(ViewMatchers.withId(R.id.last_login_layout)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
         onView(withText("PlayerName2")).check(matches(isDisplayed()));
+
+        if (isTablet()) {
+            onView(ViewMatchers.withId(R.id.last_login_layout)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
+        } else {
+            onView(ViewMatchers.withId(R.id.last_login_layout)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)));
+        }
     }
 
 
@@ -86,10 +92,10 @@ public class MainActivityInstrumentationTest extends InstrumentationTestCase {
         Intent intent = new Intent();
         mActivityRule.launchActivity(intent);
 
-        ViewInteraction appCompatTextView = onView(allOf(withId(R.id.name), withText("Game abc"), childAtPosition(allOf(withId(R.id.main_layout), childAtPosition(withId(R.id.list_view), 0)), 0), isDisplayed()));
+        ViewInteraction appCompatTextView = onView(allOf(withId(R.id.name), childAtPosition(allOf(withId(R.id.main_layout), childAtPosition(withId(R.id.list_view), 0)), 0), isDisplayed()));
         appCompatTextView.perform(click());
 
-        onView(withText("Game abc")).check(matches(isDisplayed()));
+        onView(withText(Utils.getFormattedCurrency(34000000))).check(matches(isDisplayed()));
         onView(withText("Game date:")).check(matches(isDisplayed()));
         onView(withId(R.id.date)).check(matches(isDisplayed()));
     }
@@ -121,5 +127,11 @@ public class MainActivityInstrumentationTest extends InstrumentationTestCase {
                 return parent instanceof ViewGroup && parentMatcher.matches(parent) && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
+    }
+
+
+    private boolean isTablet() {
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        return appContext.getResources().getString(R.string.screen_type).equals("tablet");
     }
 }
