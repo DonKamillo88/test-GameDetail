@@ -14,7 +14,7 @@ public class GameData implements Serializable {
     private List<Data> data;
 
 
-    public class Data implements Serializable {
+    public static class Data implements Serializable {
         private String name;
         private long jackpot;
         private String date;
@@ -30,6 +30,18 @@ public class GameData implements Serializable {
         public String getDate() {
             return date;
         }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setJackpot(long jackpot) {
+            this.jackpot = jackpot;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
     }
 
     public String getResponse() {
@@ -42,5 +54,17 @@ public class GameData implements Serializable {
 
     public List<Data> getData() {
         return data;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public void setData(List<Data> data) {
+        this.data = data;
     }
 }
