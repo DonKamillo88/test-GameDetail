@@ -3,8 +3,9 @@ package com.donkamillo.gamedetails.data.remote;
 import com.donkamillo.gamedetails.data.models.GameData;
 import com.donkamillo.gamedetails.data.models.PlayerInfo;
 
-import retrofit.Call;
-import retrofit.http.GET;
+import retrofit2.Call;
+import retrofit2.http.GET;
+
 
 /**
  * Created by DonKamillo on 15.06.2017.

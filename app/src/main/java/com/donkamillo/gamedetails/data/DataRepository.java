@@ -45,7 +45,4 @@ public class DataRepository {
         remoteDataSource.getPlayerInfo(context, callback);
     }
 
-    public void destroyInstance() {
-        dataRepository = null;
-    }
 }

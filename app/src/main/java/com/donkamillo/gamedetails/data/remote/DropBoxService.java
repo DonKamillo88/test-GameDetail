@@ -1,7 +1,8 @@
 package com.donkamillo.gamedetails.data.remote;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by DonKamillo on 15.06.2017.
