@@ -17,8 +17,6 @@ import com.donkamillo.gamedetails.RestServiceTestHelper;
 import com.donkamillo.gamedetails.data.local.SharedPreferencesManager;
 import com.donkamillo.gamedetails.data.remote.DropBoxService;
 import com.donkamillo.gamedetails.util.Utils;
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -27,6 +25,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
