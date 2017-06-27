@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,6 +13,9 @@ import com.donkamillo.gamedetails.R;
 import com.donkamillo.gamedetails.data.models.GameData;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by DonKamillo on 16.06.2017.
@@ -67,17 +69,14 @@ public class GamesCardsAdapter extends RecyclerView.Adapter<GamesCardsAdapter.Ga
 
     public class GamesViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.name)
         TextView title;
-        ImageView image;
+        @BindView(R.id.main_layout)
         LinearLayout mainLayout;
 
         public GamesViewHolder(View v) {
             super(v);
-
-            mainLayout = (LinearLayout) v.findViewById(R.id.main_layout);
-            image = (ImageView) v.findViewById((R.id.image));
-            title = (TextView) v.findViewById(R.id.name);
-
+            ButterKnife.bind(this, v);
         }
 
         private void setMainLayoutBackground(int position) {

@@ -12,6 +12,10 @@ import com.donkamillo.gamedetails.R;
 import com.donkamillo.gamedetails.data.models.GameData;
 import com.donkamillo.gamedetails.util.Utils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * Created by DonKamillo on 16.06.2017.
  */
@@ -20,8 +24,16 @@ public class GameDetailsFragment extends Fragment {
     public static final String GAME_DETAIL_ARG = "game_detail";
     public static final String CURRENCY_ARG = "currency";
 
-    private LinearLayout mainLL;
-    private TextView nameTV, jackpotTV, dateTV;
+    @BindView(R.id.main_layout)
+    LinearLayout mainLL;
+    @BindView(R.id.name)
+    TextView nameTV;
+    @BindView(R.id.jackpot)
+    TextView jackpotTV;
+    @BindView(R.id.date)
+    TextView dateTV;
+
+    private Unbinder unbinder;
 
     public static GameDetailsFragment newInstance(GameData.Data gameData, String currency) {
         Bundle b = new Bundle();
@@ -40,14 +52,8 @@ public class GameDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.game_details_fragment, container, false);
-
-        mainLL = (LinearLayout) view.findViewById(R.id.main_layout);
-        nameTV = (TextView) view.findViewById(R.id.name);
-        jackpotTV = (TextView) view.findViewById(R.id.jackpot);
-        dateTV = (TextView) view.findViewById(R.id.date);
-
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -70,4 +76,9 @@ public class GameDetailsFragment extends Fragment {
         mainLL.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

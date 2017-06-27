@@ -15,14 +15,27 @@ import com.donkamillo.gamedetails.R;
 import com.donkamillo.gamedetails.data.models.PlayerInfo;
 import com.donkamillo.gamedetails.util.Utils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by DonKamillo on 16.06.2017.
  */
 
 public class PlayerHeaderFragment extends Fragment implements PlayerHeaderContract.View {
-    private ImageView avatar;
-    private TextView name, balance, lastLoginDate;
-    private LinearLayout lastLoginLayout, mainLayout;
+
+    @BindView(R.id.avatar)
+    ImageView avatar;
+    @BindView(R.id.name)
+    TextView name;
+    @BindView(R.id.balance)
+    TextView balance;
+    @BindView(R.id.last_login_date)
+    TextView lastLoginDate;
+    @BindView(R.id.last_login_layout)
+    LinearLayout lastLoginLayout;
+    @BindView(R.id.main_layout)
+    LinearLayout mainLayout;
 
     public static PlayerHeaderFragment newInstance() {
         return new PlayerHeaderFragment();
@@ -30,15 +43,8 @@ public class PlayerHeaderFragment extends Fragment implements PlayerHeaderContra
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.player_header_fragment, container, false);
-        avatar = (ImageView) view.findViewById(R.id.avatar);
-        name = (TextView) view.findViewById(R.id.name);
-        balance = (TextView) view.findViewById(R.id.balance);
-        lastLoginDate = (TextView) view.findViewById(R.id.last_login_date);
-        lastLoginLayout = (LinearLayout) view.findViewById(R.id.last_login_layout);
-        mainLayout = (LinearLayout) view.findViewById(R.id.main_layout);
-
+        ButterKnife.bind(this, view);
         return view;
     }
 

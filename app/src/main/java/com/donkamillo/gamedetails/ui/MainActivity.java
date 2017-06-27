@@ -1,6 +1,7 @@
 package com.donkamillo.gamedetails.ui;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -13,16 +14,23 @@ import com.donkamillo.gamedetails.ui.games.GameListFragment;
 import com.donkamillo.gamedetails.ui.playerheader.PlayerHeaderFragment;
 import com.donkamillo.gamedetails.ui.playerheader.PlayerHeaderPresenter;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements GameListFragment.OnItemSelectedListener {
 
     private FragmentManager fragmentManager;
     private PlayerHeaderPresenter playerHeaderPresenter;
-    private FrameLayout frameDetail;
+
+    @BindView(R.id.game_details_fragment_placeholder)
+    @Nullable
+    FrameLayout frameDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -33,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements GameListFragment.
         PlayerHeaderFragment headerFragment = PlayerHeaderFragment.newInstance();
         ft.add(R.id.header_fragment_placeholder, headerFragment);
 
-        frameDetail = (FrameLayout) findViewById(R.id.game_details_fragment_placeholder);
         if (frameDetail != null) {
             GameDetailsFragment detailFragment = GameDetailsFragment.newInstance();
             ft.add(R.id.game_details_fragment_placeholder, detailFragment);

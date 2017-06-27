@@ -16,16 +16,25 @@ import android.widget.Toast;
 import com.donkamillo.gamedetails.R;
 import com.donkamillo.gamedetails.data.models.GameData;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * Created by DonKamillo on 16.06.2017.
  */
 
 public class GameListFragment extends Fragment implements GamesContract.View {
 
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+    @BindView(R.id.list_view)
+    RecyclerView recyclerView;
+
     private OnItemSelectedListener onItemSelectedListener;
     private GamesCardsAdapter adapter;
-    private ProgressBar progressBar;
     private String currency;
+    private Unbinder unbinder;
 
     public interface OnItemSelectedListener {
         void onItemSelected(GameData.Data data, String currency);
@@ -59,8 +68,7 @@ public class GameListFragment extends Fragment implements GamesContract.View {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.games_list_fragment, container, false);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list_view);
-        progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
+        unbinder = ButterKnife.bind(this, view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -105,6 +113,10 @@ public class GameListFragment extends Fragment implements GamesContract.View {
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }
 
