@@ -17,6 +17,7 @@ public class PlayerHeaderPresenter implements PlayerHeaderContract.Presenter {
 
     private DataRepository dataRepository;
     private PlayerHeaderContract.View view;
+    private DataSource dataSource;
 
     public PlayerHeaderPresenter(PlayerHeaderContract.View view) {
         this.view = view;
@@ -29,7 +30,9 @@ public class PlayerHeaderPresenter implements PlayerHeaderContract.Presenter {
             return;
         }
 
-        dataRepository.getPlayerInfo(context, new DataSource.GetPlayerInfoCallback() {
+        dataSource = dataRepository.getPlayerInfoSource();
+
+        dataSource.getPlayerInfo(context, new DataSource.GetPlayerInfoCallback() {
             @Override
             public void onSuccess(PlayerInfo playerInfo) {
                 if (view != null) {
@@ -45,11 +48,15 @@ public class PlayerHeaderPresenter implements PlayerHeaderContract.Presenter {
             }
 
         });
-
     }
 
     @Override
     public void showLastLogin(boolean isShow) {
         view.showLastLogin(isShow);
+    }
+
+    @Override
+    public void unSubscribe() {
+        dataSource.unSubscribe();
     }
 }

@@ -29,11 +29,7 @@ public class DataRepository {
         return dataRepository;
     }
 
-    public void getGames(Context context, final DataSource.GetGamesCallback callback) {
-        getDataSource(context).getGames(context, callback);
-    }
-
-    public DataSource getDataSource(Context context) {
+    public DataSource getGameDataSource(Context context) {
         long today = new Date().getTime();
         long downloadDataDate = SharedPreferencesManager.loadCacheDate(context);
         if (downloadDataDate == 0 || today - downloadDataDate > TimeUnit.HOURS.toMillis(1)) {
@@ -43,8 +39,9 @@ public class DataRepository {
         }
     }
 
-    public void getPlayerInfo(Context context, final DataSource.GetPlayerInfoCallback callback) {
-        remoteDataSource.getPlayerInfo(context, callback);
+    public DataSource getPlayerInfoSource() {
+        return remoteDataSource;
     }
+
 
 }

@@ -9,9 +9,12 @@ import com.donkamillo.gamedetails.data.models.PlayerInfo;
 
 import java.util.Date;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -21,54 +24,88 @@ import retrofit2.Response;
 public class RemoteDataSource extends DataSource {
 
     private static RemoteDataSource remoteDataSource;
+    private CompositeDisposable compositeDisposable;
 
     public static synchronized RemoteDataSource getInstance() {
         if (remoteDataSource == null) {
             remoteDataSource = new RemoteDataSource();
         }
+
         return remoteDataSource;
     }
 
     @Override
     public void getGames(final Context context, final GetGamesCallback callback) {
-        Call<GameData> call;
         DropBox dropBox = DropBoxService.getService();
 
-        call = dropBox.getGameData();
-        call.enqueue(new Callback<GameData>() {
+        DisposableSingleObserver<GameData> disposableSingleObserver = new DisposableSingleObserver<GameData>() {
             @Override
-            public void onResponse(Call<GameData> call, Response<GameData> response) {
+            public void onSuccess(GameData gameData) {
                 long today = new Date().getTime();
                 SharedPreferencesManager.saveCacheDate(today, context);
-                SharedPreferencesManager.saveCache(response.body(), context);
+                SharedPreferencesManager.saveCache(gameData, context);
 
-                callback.onSuccess(response.body());
+                callback.onSuccess(gameData);
             }
 
             @Override
-            public void onFailure(Call<GameData> call, Throwable t) {
-                callback.onFailure(t);
+            public void onError(Throwable throwable) {
+                callback.onFailure(throwable);
             }
+        };
 
-        });
+        if (!getCompositeDisposable().isDisposed()) {
+            Single<GameData> newsModelSingle = dropBox.getGameData();
+            Disposable gameDataDisposable = newsModelSingle
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(disposableSingleObserver);
+            compositeDisposable.add(gameDataDisposable);
+        }
     }
+
 
     @Override
     public void getPlayerInfo(final Context context, final GetPlayerInfoCallback callback) {
-        Call<PlayerInfo> call;
         DropBox dropBox = DropBoxService.getService();
 
-        call = dropBox.getPlayerInfo();
-        call.enqueue(new Callback<PlayerInfo>() {
+        DisposableSingleObserver<PlayerInfo> disposableSingleObserver = new DisposableSingleObserver<PlayerInfo>() {
             @Override
-            public void onResponse(Call<PlayerInfo> call, Response<PlayerInfo> response) {
-                callback.onSuccess(response.body());
+            public void onSuccess(PlayerInfo playerInfo) {
+                callback.onSuccess(playerInfo);
             }
 
             @Override
-            public void onFailure(Call<PlayerInfo> call, Throwable t) {
-                callback.onFailure(t);
+            public void onError(Throwable throwable) {
+                callback.onFailure(throwable);
             }
-        });
+        };
+
+        if (!getCompositeDisposable().isDisposed()) {
+            Single<PlayerInfo> newsModelSingle = dropBox.getPlayerInfo();
+            Disposable playerInfoDisposable = newsModelSingle
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(disposableSingleObserver);
+            compositeDisposable.add(playerInfoDisposable);
+        }
+
+    }
+
+    @Override
+    public void unSubscribe() {
+        if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
+//            compositeDisposable.remove(playerInfoDisposable);
+//            compositeDisposable.remove(gameDataDisposable);
+            compositeDisposable.dispose();
+            compositeDisposable = null;
+        }
+    }
+
+    private CompositeDisposable getCompositeDisposable() {
+        if (compositeDisposable == null) {
+            compositeDisposable = new CompositeDisposable();
+        }
+        return compositeDisposable;
     }
 }

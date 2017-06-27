@@ -35,6 +35,7 @@ public class GameListFragment extends Fragment implements GamesContract.View {
     private GamesCardsAdapter adapter;
     private String currency;
     private Unbinder unbinder;
+    private GamesPresenter gamesPresenter;
 
     public interface OnItemSelectedListener {
         void onItemSelected(GameData.Data data, String currency);
@@ -90,7 +91,7 @@ public class GameListFragment extends Fragment implements GamesContract.View {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        GamesPresenter gamesPresenter = new GamesPresenter(this);
+        gamesPresenter = new GamesPresenter(this);
         gamesPresenter.getGames(getContext());
     }
 
@@ -117,6 +118,7 @@ public class GameListFragment extends Fragment implements GamesContract.View {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        gamesPresenter.unSubscribe();
     }
 }
 

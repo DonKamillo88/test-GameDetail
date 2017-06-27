@@ -57,7 +57,6 @@ public class Utils {
             Date date = inputFormat.parse(dateStr);
             str = outputFormat.format(date);
         } catch (ParseException e) {
-            e.printStackTrace();
             return dateStr;
         }
 

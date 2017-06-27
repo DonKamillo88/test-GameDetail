@@ -23,6 +23,8 @@ public interface GamesContract {
 
         void getGames(Context context);
 
+        void unSubscribe();
+
     }
 
 }

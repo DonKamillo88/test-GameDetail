@@ -79,4 +79,10 @@ public class MainActivity extends AppCompatActivity implements GameListFragment.
             playerHeaderPresenter.showLastLogin(true);
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        playerHeaderPresenter.unSubscribe();
+    }
 }

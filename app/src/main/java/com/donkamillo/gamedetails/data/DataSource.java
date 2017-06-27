@@ -29,4 +29,6 @@ public abstract class DataSource {
     public abstract void getGames(Context context, GetGamesCallback callback);
 
     public abstract void getPlayerInfo(Context context, GetPlayerInfoCallback callback);
+
+    public abstract void unSubscribe();
 }

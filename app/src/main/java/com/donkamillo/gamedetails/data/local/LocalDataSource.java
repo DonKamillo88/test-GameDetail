@@ -28,4 +28,9 @@ public class LocalDataSource extends DataSource {
     public void getPlayerInfo(final Context context, GetPlayerInfoCallback callback) {
         // nope
     }
+
+    @Override
+    public void unSubscribe() {
+        // nope
+    }
 }

@@ -9,6 +9,7 @@ import com.donkamillo.gamedetails.data.local.LocalDataSource;
 import com.donkamillo.gamedetails.data.models.GameData;
 import com.donkamillo.gamedetails.data.remote.RemoteDataSource;
 
+
 /**
  * Created by DonKamillo on 16.06.2017.
  */
@@ -18,6 +19,8 @@ public class GamesPresenter implements GamesContract.Presenter {
     private DataRepository dataRepository;
 
     private GamesContract.View view;
+
+    private DataSource dataSource;
 
     public GamesPresenter(GamesContract.View view) {
         this.view = view;
@@ -33,7 +36,9 @@ public class GamesPresenter implements GamesContract.Presenter {
 
         view.setProgressBar(true);
 
-        dataRepository.getGames(context, new DataSource.GetGamesCallback() {
+        dataSource = dataRepository.getGameDataSource(context);
+
+        dataSource.getGames(context, new DataSource.GetGamesCallback() {
             @Override
             public void onSuccess(GameData games) {
                 if (view != null) {
@@ -53,5 +58,9 @@ public class GamesPresenter implements GamesContract.Presenter {
         });
     }
 
+    @Override
+    public void unSubscribe() {
+        dataSource.unSubscribe();
+    }
 
 }

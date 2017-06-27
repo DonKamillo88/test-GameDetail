@@ -24,5 +24,7 @@ public interface PlayerHeaderContract {
         void getPlayerInfo(Context context);
 
         void showLastLogin(boolean isShow);
+
+        void unSubscribe();
     }
 }
