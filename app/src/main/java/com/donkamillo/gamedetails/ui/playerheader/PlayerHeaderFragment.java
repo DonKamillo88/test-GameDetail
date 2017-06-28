@@ -26,7 +26,7 @@ public class PlayerHeaderFragment extends Fragment implements PlayerHeaderContra
 
     @BindView(R.id.avatar)
     ImageView avatar;
-    @BindView(R.id.name)
+    @BindView(R.id.player_name)
     TextView name;
     @BindView(R.id.balance)
     TextView balance;

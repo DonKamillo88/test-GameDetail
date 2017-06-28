@@ -69,7 +69,7 @@ public class GamesCardsAdapter extends RecyclerView.Adapter<GamesCardsAdapter.Ga
 
     public class GamesViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.name)
+        @BindView(R.id.item_name)
         TextView title;
         @BindView(R.id.main_layout)
         LinearLayout mainLayout;

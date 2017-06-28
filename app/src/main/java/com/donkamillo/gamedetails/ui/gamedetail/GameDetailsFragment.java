@@ -26,7 +26,7 @@ public class GameDetailsFragment extends Fragment {
 
     @BindView(R.id.main_layout)
     LinearLayout mainLL;
-    @BindView(R.id.name)
+    @BindView(R.id.details_game_name)
     TextView nameTV;
     @BindView(R.id.jackpot)
     TextView jackpotTV;
