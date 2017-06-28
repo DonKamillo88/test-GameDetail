@@ -1,7 +1,5 @@
 package com.donkamillo.gamedetails.ui.games;
 
-import android.content.Context;
-
 import com.donkamillo.gamedetails.data.models.GameData;
 
 /**
@@ -19,11 +17,13 @@ public interface GamesContract {
         void showToastMessage(String message);
     }
 
-    interface Presenter {
+    interface Presenter<T> {
 
-        void getGames(Context context);
+        void getGames();
 
         void unSubscribe();
+
+        void setView(T view);
 
     }
 

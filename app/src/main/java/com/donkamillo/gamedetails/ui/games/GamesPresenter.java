@@ -5,9 +5,9 @@ import android.content.Context;
 import com.donkamillo.gamedetails.R;
 import com.donkamillo.gamedetails.data.DataRepository;
 import com.donkamillo.gamedetails.data.DataSource;
-import com.donkamillo.gamedetails.data.local.LocalDataSource;
 import com.donkamillo.gamedetails.data.models.GameData;
-import com.donkamillo.gamedetails.data.remote.RemoteDataSource;
+
+import javax.inject.Inject;
 
 
 /**
@@ -17,26 +17,25 @@ import com.donkamillo.gamedetails.data.remote.RemoteDataSource;
 public class GamesPresenter implements GamesContract.Presenter {
 
     private DataRepository dataRepository;
-
     private GamesContract.View view;
-
+    private Context context;
     private DataSource dataSource;
 
-    public GamesPresenter(GamesContract.View view) {
-        this.view = view;
-        this.dataRepository = DataRepository.getInstance(RemoteDataSource.getInstance(), LocalDataSource.getInstance());
+    @Inject
+    public GamesPresenter(Context context, DataRepository dataRepository) {
+        this.dataRepository = dataRepository;
+        this.context = context;
     }
 
-
     @Override
-    public void getGames(final Context context) {
+    public void getGames() {
         if (view == null) {
             return;
         }
 
         view.setProgressBar(true);
 
-        dataSource = dataRepository.getGameDataSource(context);
+        dataSource = dataRepository.getGameDataSource();
 
         dataSource.getGames(context, new DataSource.GetGamesCallback() {
             @Override
@@ -63,4 +62,8 @@ public class GamesPresenter implements GamesContract.Presenter {
         dataSource.unSubscribe();
     }
 
+    @Override
+    public void setView(Object view) {
+        this.view = (GamesContract.View) view;
+    }
 }

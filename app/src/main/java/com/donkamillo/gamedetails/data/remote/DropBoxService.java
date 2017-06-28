@@ -1,6 +1,8 @@
 package com.donkamillo.gamedetails.data.remote;
 
 
+import javax.inject.Inject;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -14,7 +16,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class DropBoxService {
     public static String API_URL = "https://www.dl.dropboxusercontent.com";
 
-    public static DropBox getService() {
+    @Inject
+    public DropBoxService() {
+    }
+
+    public DropBox getService() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();

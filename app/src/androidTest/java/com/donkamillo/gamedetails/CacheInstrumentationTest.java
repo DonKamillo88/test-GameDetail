@@ -1,12 +1,14 @@
 package com.donkamillo.gamedetails;
 
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.donkamillo.gamedetails.data.local.SharedPreferencesManager;
 import com.donkamillo.gamedetails.data.models.GameData;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -20,24 +22,28 @@ import static org.junit.Assert.assertNull;
 @RunWith(AndroidJUnit4.class)
 public class CacheInstrumentationTest {
 
+    private SharedPreferencesManager preferencesManager;
+
+    @Before
+    public void setUp() {
+        Context app = InstrumentationRegistry.getTargetContext();
+        this.preferencesManager = new SharedPreferencesManager(PreferenceManager.getDefaultSharedPreferences(app));
+    }
+
     @Test
     public void saveLoadCacheDate() throws Exception {
-        Context appContext = InstrumentationRegistry.getTargetContext();
-
         Date now = new Date();
 
-        SharedPreferencesManager.saveCacheDate(now.getTime(), appContext);
-        long loadedDate = SharedPreferencesManager.loadCacheDate(appContext);
+        preferencesManager.saveCacheDate(now.getTime());
+        long loadedDate = preferencesManager.loadCacheDate();
 
         assertEquals(now.getTime(), loadedDate);
     }
 
     @Test
     public void saveLoadCache_correct_data() throws Exception {
-        Context appContext = InstrumentationRegistry.getTargetContext();
-
-        SharedPreferencesManager.saveCache(getGameDataMock(), appContext);
-        GameData loadedCache = SharedPreferencesManager.loadCache(appContext);
+        preferencesManager.saveCache(getGameDataMock());
+        GameData loadedCache = preferencesManager.loadCache();
 
         assertEquals(2, loadedCache.getData().size());
         assertEquals("d2", loadedCache.getData().get(1).getName());
@@ -46,13 +52,11 @@ public class CacheInstrumentationTest {
 
     @Test
     public void saveLoadCache_empty_data_list() throws Exception {
-        Context appContext = InstrumentationRegistry.getTargetContext();
-
         GameData gameData = getGameDataMock();
         gameData.setData(null);
 
-        SharedPreferencesManager.saveCache(gameData, appContext);
-        GameData loadedCache = SharedPreferencesManager.loadCache(appContext);
+        preferencesManager.saveCache(gameData);
+        GameData loadedCache = preferencesManager.loadCache();
 
         assertNull(loadedCache.getData());
         assertEquals("GBP", loadedCache.getCurrency());
@@ -60,13 +64,11 @@ public class CacheInstrumentationTest {
 
     @Test
     public void saveLoadCache_empty_currency() throws Exception {
-        Context appContext = InstrumentationRegistry.getTargetContext();
-
         GameData gameData = getGameDataMock();
         gameData.setCurrency("");
 
-        SharedPreferencesManager.saveCache(gameData, appContext);
-        GameData loadedCache = SharedPreferencesManager.loadCache(appContext);
+        preferencesManager.saveCache(gameData);
+        GameData loadedCache = preferencesManager.loadCache();
 
         assertEquals(2, loadedCache.getData().size());
         assertEquals("d2", loadedCache.getData().get(1).getName());

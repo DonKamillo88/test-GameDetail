@@ -5,9 +5,9 @@ import android.content.Context;
 import com.donkamillo.gamedetails.R;
 import com.donkamillo.gamedetails.data.DataRepository;
 import com.donkamillo.gamedetails.data.DataSource;
-import com.donkamillo.gamedetails.data.local.LocalDataSource;
 import com.donkamillo.gamedetails.data.models.PlayerInfo;
-import com.donkamillo.gamedetails.data.remote.RemoteDataSource;
+
+import javax.inject.Inject;
 
 /**
  * Created by DonKamillo on 16.06.2017.
@@ -18,14 +18,16 @@ public class PlayerHeaderPresenter implements PlayerHeaderContract.Presenter {
     private DataRepository dataRepository;
     private PlayerHeaderContract.View view;
     private DataSource dataSource;
+    private Context context;
 
-    public PlayerHeaderPresenter(PlayerHeaderContract.View view) {
-        this.view = view;
-        this.dataRepository = DataRepository.getInstance(RemoteDataSource.getInstance(), LocalDataSource.getInstance());
+    @Inject
+    public PlayerHeaderPresenter(Context context, DataRepository dataRepository) {
+        this.dataRepository = dataRepository;
+        this.context = context;
     }
 
     @Override
-    public void getPlayerInfo(final Context context) {
+    public void getPlayerInfo() {
         if (view == null) {
             return;
         }
@@ -58,5 +60,10 @@ public class PlayerHeaderPresenter implements PlayerHeaderContract.Presenter {
     @Override
     public void unSubscribe() {
         dataSource.unSubscribe();
+    }
+
+    @Override
+    public void setView(Object view) {
+        this.view = (PlayerHeaderContract.View) view;
     }
 }

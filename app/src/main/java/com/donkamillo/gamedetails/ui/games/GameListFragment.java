@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import com.donkamillo.gamedetails.R;
 import com.donkamillo.gamedetails.data.models.GameData;
+import com.donkamillo.gamedetails.di.App;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,11 +34,14 @@ public class GameListFragment extends Fragment implements GamesContract.View {
     @BindView(R.id.list_view)
     RecyclerView recyclerView;
 
+    @Inject
+    GamesPresenter gamesPresenter;
+
     private OnItemSelectedListener onItemSelectedListener;
     private GamesCardsAdapter adapter;
     private String currency;
     private Unbinder unbinder;
-    private GamesPresenter gamesPresenter;
+
 
     public interface OnItemSelectedListener {
         void onItemSelected(GameData.Data data, String currency);
@@ -67,7 +73,7 @@ public class GameListFragment extends Fragment implements GamesContract.View {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        App.component().inject(this);
         View view = inflater.inflate(R.layout.games_list_fragment, container, false);
         unbinder = ButterKnife.bind(this, view);
 
@@ -91,8 +97,8 @@ public class GameListFragment extends Fragment implements GamesContract.View {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        gamesPresenter = new GamesPresenter(this);
-        gamesPresenter.getGames(getContext());
+        gamesPresenter.setView(this);
+        gamesPresenter.getGames();
     }
 
     @Override

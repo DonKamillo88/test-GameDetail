@@ -1,7 +1,5 @@
 package com.donkamillo.gamedetails.ui.playerheader;
 
-import android.content.Context;
-
 import com.donkamillo.gamedetails.data.models.PlayerInfo;
 
 /**
@@ -19,12 +17,14 @@ public interface PlayerHeaderContract {
         void showErrorMessage(String string);
     }
 
-    interface Presenter {
+    interface Presenter<T> {
 
-        void getPlayerInfo(Context context);
+        void getPlayerInfo();
 
         void showLastLogin(boolean isShow);
 
         void unSubscribe();
+
+        void setView(T view);
     }
 }

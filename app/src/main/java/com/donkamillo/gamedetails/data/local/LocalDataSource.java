@@ -4,24 +4,25 @@ import android.content.Context;
 
 import com.donkamillo.gamedetails.data.DataSource;
 
+import javax.inject.Inject;
+
 /**
  * Created by DonKamillo on 16.06.2017.
  */
 
 public class LocalDataSource extends DataSource {
 
-    private static LocalDataSource localDataSource;
 
-    public static synchronized LocalDataSource getInstance() {
-        if (localDataSource == null) {
-            localDataSource = new LocalDataSource();
-        }
-        return localDataSource;
+    private SharedPreferencesManager preferencesManager;
+
+    @Inject
+    public LocalDataSource(SharedPreferencesManager preferencesManager) {
+        this.preferencesManager = preferencesManager;
     }
 
     @Override
     public void getGames(final Context context, GetGamesCallback callback) {
-        callback.onSuccess(SharedPreferencesManager.loadCache(context));
+        callback.onSuccess(preferencesManager.loadCache());
     }
 
     @Override

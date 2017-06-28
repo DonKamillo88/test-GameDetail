@@ -9,10 +9,13 @@ import android.widget.FrameLayout;
 
 import com.donkamillo.gamedetails.R;
 import com.donkamillo.gamedetails.data.models.GameData;
+import com.donkamillo.gamedetails.di.App;
 import com.donkamillo.gamedetails.ui.gamedetail.GameDetailsFragment;
 import com.donkamillo.gamedetails.ui.games.GameListFragment;
 import com.donkamillo.gamedetails.ui.playerheader.PlayerHeaderFragment;
 import com.donkamillo.gamedetails.ui.playerheader.PlayerHeaderPresenter;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,7 +23,9 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements GameListFragment.OnItemSelectedListener {
 
     private FragmentManager fragmentManager;
-    private PlayerHeaderPresenter playerHeaderPresenter;
+
+    @Inject
+    PlayerHeaderPresenter playerHeaderPresenter;
 
     @BindView(R.id.game_details_fragment_placeholder)
     @Nullable
@@ -30,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements GameListFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        App.component().inject(this);
         ButterKnife.bind(this);
 
         fragmentManager = getSupportFragmentManager();
@@ -48,8 +54,9 @@ public class MainActivity extends AppCompatActivity implements GameListFragment.
 
         ft.commit();
 
-        playerHeaderPresenter = new PlayerHeaderPresenter(headerFragment);
-        playerHeaderPresenter.getPlayerInfo(this);
+        playerHeaderPresenter.setView(headerFragment);
+        playerHeaderPresenter.getPlayerInfo();
+
     }
 
     @Override

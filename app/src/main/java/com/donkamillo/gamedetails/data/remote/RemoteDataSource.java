@@ -9,6 +9,8 @@ import com.donkamillo.gamedetails.data.models.PlayerInfo;
 
 import java.util.Date;
 
+import javax.inject.Inject;
+
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -23,27 +25,26 @@ import io.reactivex.schedulers.Schedulers;
 
 public class RemoteDataSource extends DataSource {
 
-    private static RemoteDataSource remoteDataSource;
     private CompositeDisposable compositeDisposable;
+    private SharedPreferencesManager preferencesManager;
+    private DropBoxService dropBoxService;
 
-    public static synchronized RemoteDataSource getInstance() {
-        if (remoteDataSource == null) {
-            remoteDataSource = new RemoteDataSource();
-        }
-
-        return remoteDataSource;
+    @Inject
+    public RemoteDataSource(SharedPreferencesManager preferencesManager, DropBoxService dropBoxService) {
+        this.preferencesManager = preferencesManager;
+        this.dropBoxService = dropBoxService;
     }
 
     @Override
     public void getGames(final Context context, final GetGamesCallback callback) {
-        DropBox dropBox = DropBoxService.getService();
+        DropBox dropBox = dropBoxService.getService();
 
         DisposableSingleObserver<GameData> disposableSingleObserver = new DisposableSingleObserver<GameData>() {
             @Override
             public void onSuccess(GameData gameData) {
                 long today = new Date().getTime();
-                SharedPreferencesManager.saveCacheDate(today, context);
-                SharedPreferencesManager.saveCache(gameData, context);
+                preferencesManager.saveCacheDate(today);
+                preferencesManager.saveCache(gameData);
 
                 callback.onSuccess(gameData);
             }
@@ -67,7 +68,7 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void getPlayerInfo(final Context context, final GetPlayerInfoCallback callback) {
-        DropBox dropBox = DropBoxService.getService();
+        DropBox dropBox = dropBoxService.getService();
 
         DisposableSingleObserver<PlayerInfo> disposableSingleObserver = new DisposableSingleObserver<PlayerInfo>() {
             @Override
@@ -95,8 +96,6 @@ public class RemoteDataSource extends DataSource {
     @Override
     public void unSubscribe() {
         if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
-//            compositeDisposable.remove(playerInfoDisposable);
-//            compositeDisposable.remove(gameDataDisposable);
             compositeDisposable.dispose();
             compositeDisposable = null;
         }

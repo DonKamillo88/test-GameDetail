@@ -2,6 +2,7 @@ package com.donkamillo.gamedetails.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.matcher.ViewMatchers;
@@ -44,6 +45,8 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class MainActivityInstrumentationTest extends InstrumentationTestCase {
 
+    private SharedPreferencesManager preferencesManager;
+
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class, true, false);
     private MockWebServer server;
@@ -51,6 +54,9 @@ public class MainActivityInstrumentationTest extends InstrumentationTestCase {
     @Before
     public void setUp() throws Exception {
         super.setUp();
+        Context app = InstrumentationRegistry.getTargetContext();
+        this.preferencesManager = new SharedPreferencesManager(PreferenceManager.getDefaultSharedPreferences(app));
+
         server = new MockWebServer();
         server.start();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
@@ -114,8 +120,7 @@ public class MainActivityInstrumentationTest extends InstrumentationTestCase {
     }
 
     private void clearCache() {
-        Context appContext = InstrumentationRegistry.getTargetContext();
-        SharedPreferencesManager.saveCacheDate(0, appContext);
+        preferencesManager.saveCacheDate(0);
     }
 
     private static Matcher<View> childAtPosition(final Matcher<View> parentMatcher, final int position) {
