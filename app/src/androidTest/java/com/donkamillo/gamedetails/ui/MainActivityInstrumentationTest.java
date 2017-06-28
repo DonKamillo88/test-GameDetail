@@ -62,6 +62,7 @@ public class MainActivityInstrumentationTest extends InstrumentationTestCase {
 
     @Test
     public void testHeaderView_GamesListDisplay() throws Exception {
+        Thread.sleep(5000);
         Intent intent = new Intent();
         mActivityRule.launchActivity(intent);
 
@@ -93,6 +94,7 @@ public class MainActivityInstrumentationTest extends InstrumentationTestCase {
 
     @Test
     public void testDetailView() throws Exception {
+        Thread.sleep(5000);
         Intent intent = new Intent();
         mActivityRule.launchActivity(intent);
 
