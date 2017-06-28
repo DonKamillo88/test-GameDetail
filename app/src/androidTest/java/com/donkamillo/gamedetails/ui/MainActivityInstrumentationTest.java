@@ -67,15 +67,18 @@ public class MainActivityInstrumentationTest extends InstrumentationTestCase {
 
         onView(ViewMatchers.withId(R.id.last_login_layout)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
         onView(withText("PlayerName2")).check(matches(isDisplayed()));
-        onView(allOf(withId(R.id.name), withText("Game abc"), childAtPosition(allOf(withId(R.id.main_layout), childAtPosition(withId(R.id.list_view), 0)), 0), isDisplayed()));
+        onView(allOf(withId(R.id.item_name), withText("Game abc"), childAtPosition(allOf(withId(R.id.main_layout), childAtPosition(withId(R.id.list_view), 0)), 0), isDisplayed()));
     }
 
     @Test
     public void testHeaderView_GameDetailDisplay() throws Exception {
+        // Espresso sometimes stops at the first view, probably waiting for the end of the progressbar animation
+        // 5000 sleep time allow pass first view
+        Thread.sleep(5000);
+
         Intent intent = new Intent();
         mActivityRule.launchActivity(intent);
-
-        ViewInteraction appCompatTextView = onView(allOf(withId(R.id.name), withText("Game abc"), childAtPosition(allOf(withId(R.id.main_layout), childAtPosition(withId(R.id.list_view), 0)), 0), isDisplayed()));
+        ViewInteraction appCompatTextView = onView(allOf(withId(R.id.item_name), childAtPosition(allOf(withId(R.id.main_layout), childAtPosition(withId(R.id.list_view), 0)), 0), isDisplayed()));
         appCompatTextView.perform(click());
 
         onView(withText("PlayerName2")).check(matches(isDisplayed()));
@@ -93,7 +96,7 @@ public class MainActivityInstrumentationTest extends InstrumentationTestCase {
         Intent intent = new Intent();
         mActivityRule.launchActivity(intent);
 
-        ViewInteraction appCompatTextView = onView(allOf(withId(R.id.name), childAtPosition(allOf(withId(R.id.main_layout), childAtPosition(withId(R.id.list_view), 0)), 0), isDisplayed()));
+        ViewInteraction appCompatTextView = onView(allOf(withId(R.id.item_name), childAtPosition(allOf(withId(R.id.main_layout), childAtPosition(withId(R.id.list_view), 0)), 0), isDisplayed()));
         appCompatTextView.perform(click());
 
         onView(withText(Utils.getFormattedCurrency(34000000))).check(matches(isDisplayed()));
