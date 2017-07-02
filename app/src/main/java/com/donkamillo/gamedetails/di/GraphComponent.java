@@ -13,19 +13,10 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = {MainModule.class})
-public interface DaggerGraphComponent {
+public interface GraphComponent {
     void inject(MainActivity mainActivity);
 
     void inject(GameListFragment gameListFragment);
 
-    static final class Initializer {
-        private Initializer() {
-        }
 
-        public static DaggerGraphComponent init(App app) {
-            return DaggerDaggerGraphComponent.builder()
-                    .mainModule(new MainModule(app))
-                    .build();
-        }
-    }
 }

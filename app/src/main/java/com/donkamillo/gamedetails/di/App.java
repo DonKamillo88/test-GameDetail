@@ -7,7 +7,7 @@ import android.app.Application;
  */
 
 public class App extends Application {
-    private static DaggerGraphComponent graph;
+    private static GraphComponent graph;
     private static App instance;
 
     @Override
@@ -17,11 +17,15 @@ public class App extends Application {
         buildComponentGraph();
     }
 
-    public static DaggerGraphComponent component() {
+    public static GraphComponent component() {
         return graph;
     }
 
     public static void buildComponentGraph() {
-        graph = DaggerGraphComponent.Initializer.init(instance);
+        graph = DaggerGraphComponent.builder()
+                .mainModule(new MainModule(instance))
+                .build();
     }
+
+
 }
