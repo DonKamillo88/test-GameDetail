@@ -1,5 +1,8 @@
 package com.donkamillo.gamedetails.di;
 
+import com.donkamillo.gamedetails.di.module.ApiModule;
+import com.donkamillo.gamedetails.di.module.DataModule;
+import com.donkamillo.gamedetails.di.module.MainModule;
 import com.donkamillo.gamedetails.ui.MainActivity;
 import com.donkamillo.gamedetails.ui.games.GameListFragment;
 
@@ -12,8 +15,8 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = {MainModule.class})
-public interface GraphComponent {
+@Component(modules = {MainModule.class, DataModule.class, ApiModule.class})
+public interface AppComponent {
     void inject(MainActivity mainActivity);
 
     void inject(GameListFragment gameListFragment);

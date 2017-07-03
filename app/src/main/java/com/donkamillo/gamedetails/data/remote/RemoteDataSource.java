@@ -9,8 +9,6 @@ import com.donkamillo.gamedetails.data.models.PlayerInfo;
 
 import java.util.Date;
 
-import javax.inject.Inject;
-
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -27,18 +25,15 @@ public class RemoteDataSource extends DataSource {
 
     private CompositeDisposable compositeDisposable;
     private SharedPreferencesManager preferencesManager;
-    private DropBoxService dropBoxService;
+    private DropBox dropBox;
 
-    @Inject
-    public RemoteDataSource(SharedPreferencesManager preferencesManager, DropBoxService dropBoxService) {
+    public RemoteDataSource(SharedPreferencesManager preferencesManager, DropBox dropBox) {
         this.preferencesManager = preferencesManager;
-        this.dropBoxService = dropBoxService;
+        this.dropBox = dropBox;
     }
 
     @Override
     public void getGames(final Context context, final GetGamesCallback callback) {
-        DropBox dropBox = dropBoxService.getService();
-
         DisposableSingleObserver<GameData> disposableSingleObserver = new DisposableSingleObserver<GameData>() {
             @Override
             public void onSuccess(GameData gameData) {
@@ -68,8 +63,6 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void getPlayerInfo(final Context context, final GetPlayerInfoCallback callback) {
-        DropBox dropBox = dropBoxService.getService();
-
         DisposableSingleObserver<PlayerInfo> disposableSingleObserver = new DisposableSingleObserver<PlayerInfo>() {
             @Override
             public void onSuccess(PlayerInfo playerInfo) {

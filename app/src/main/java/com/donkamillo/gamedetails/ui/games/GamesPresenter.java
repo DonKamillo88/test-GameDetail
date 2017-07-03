@@ -21,7 +21,6 @@ public class GamesPresenter implements GamesContract.Presenter {
     private Context context;
     private DataSource dataSource;
 
-    @Inject
     public GamesPresenter(Context context, DataRepository dataRepository) {
         this.dataRepository = dataRepository;
         this.context = context;

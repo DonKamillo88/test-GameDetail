@@ -17,7 +17,6 @@ public class DataRepository {
     private DataSource localDataSource;
     private SharedPreferencesManager preferencesManager;
 
-   // @Inject
     public DataRepository(DataSource remoteDataSource, DataSource localDataSource, SharedPreferencesManager preferencesManager) {
         this.remoteDataSource = remoteDataSource;
         this.localDataSource = localDataSource;

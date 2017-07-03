@@ -8,8 +8,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-import javax.inject.Inject;
-
 /**
  * Created by DonKamillo on 16.06.2017.
  */
@@ -20,24 +18,22 @@ public class SharedPreferencesManager {
     private static final String CACHE_DATE = "cache_date";
 
     private SharedPreferences sharedPrefs;
+    private Gson gson;
 
-    @Inject
-    public SharedPreferencesManager(SharedPreferences sharedPreferences) {
+    public SharedPreferencesManager(SharedPreferences sharedPreferences, Gson gson) {
         this.sharedPrefs = sharedPreferences;
+        this.gson = gson;
     }
 
     public void saveCache(GameData gameData) {
         SharedPreferences.Editor editor = sharedPrefs.edit();
-        Gson gson = new Gson();
 
         String json = gson.toJson(gameData);
-
         editor.putString(CACHE, json);
         editor.apply();
     }
 
     public GameData loadCache() {
-        Gson gson = new Gson();
         String json = sharedPrefs.getString(CACHE, null);
         Type type = new TypeToken<GameData>() {
         }.getType();

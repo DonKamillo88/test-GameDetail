@@ -16,8 +16,9 @@ import android.view.ViewParent;
 import com.donkamillo.gamedetails.R;
 import com.donkamillo.gamedetails.RestServiceTestHelper;
 import com.donkamillo.gamedetails.data.local.SharedPreferencesManager;
-import com.donkamillo.gamedetails.data.remote.DropBoxService;
+import com.donkamillo.gamedetails.di.module.ApiModule;
 import com.donkamillo.gamedetails.util.Utils;
+import com.google.gson.Gson;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -55,12 +56,12 @@ public class MainActivityInstrumentationTest extends InstrumentationTestCase {
     public void setUp() throws Exception {
         super.setUp();
         Context app = InstrumentationRegistry.getTargetContext();
-        this.preferencesManager = new SharedPreferencesManager(PreferenceManager.getDefaultSharedPreferences(app));
+        this.preferencesManager = new SharedPreferencesManager(PreferenceManager.getDefaultSharedPreferences(app), new Gson());
 
         server = new MockWebServer();
         server.start();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
-        DropBoxService.API_URL = server.url("/").toString();
+        ApiModule.API_URL = server.url("/").toString();
 
         clearCache();
         mockServer();

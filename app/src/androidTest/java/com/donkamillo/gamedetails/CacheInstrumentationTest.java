@@ -7,6 +7,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.donkamillo.gamedetails.data.local.SharedPreferencesManager;
 import com.donkamillo.gamedetails.data.models.GameData;
+import com.google.gson.Gson;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class CacheInstrumentationTest {
     @Before
     public void setUp() {
         Context app = InstrumentationRegistry.getTargetContext();
-        this.preferencesManager = new SharedPreferencesManager(PreferenceManager.getDefaultSharedPreferences(app));
+        this.preferencesManager = new SharedPreferencesManager(PreferenceManager.getDefaultSharedPreferences(app), new Gson());
     }
 
     @Test

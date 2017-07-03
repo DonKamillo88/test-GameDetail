@@ -12,10 +12,8 @@ import javax.inject.Inject;
 
 public class LocalDataSource extends DataSource {
 
-
     private SharedPreferencesManager preferencesManager;
 
-    @Inject
     public LocalDataSource(SharedPreferencesManager preferencesManager) {
         this.preferencesManager = preferencesManager;
     }

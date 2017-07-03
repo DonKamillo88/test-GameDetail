@@ -20,7 +20,6 @@ public class PlayerHeaderPresenter implements PlayerHeaderContract.Presenter {
     private DataSource dataSource;
     private Context context;
 
-  //  @Inject
     public PlayerHeaderPresenter(Context context, DataRepository dataRepository) {
         this.dataRepository = dataRepository;
         this.context = context;
